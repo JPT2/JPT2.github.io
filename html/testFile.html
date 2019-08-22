@@ -72,7 +72,7 @@
         
       </li>
     </ul>
-    <div class="summary"> 
+    <div class="summary" id="postArea"> 
       <p style="font-size:100px; text-align: center;">&#128126</p>
     </div>
   </div>
@@ -123,6 +123,11 @@
     save.setAttribute("contenteditable", false);
     save.style.width = "50%";
     save.textContent = "Save Post";
+    save.addEventListener("click", function() {
+      let post = document.getElementById("newPost");
+      uploadNewPost(postArea, post.firstElementChild.textContent);
+      post.firstElementChild.innerHTML = "";;
+    });
     let clear = document.createElement("div");
     clear.classList.add("menuButton");
     clear.setAttribute("contenteditable", false);
@@ -136,7 +141,10 @@
     for (i = 0; i < coll.length; i++) {
       coll[i].addEventListener("click", function() {
         this.classList.toggle("active");
+
+        // Bad for to add an id here. But i know there's only going to be 1 so w/e
         var content = this.nextElementSibling;
+        content.id = "newPost";
         content.classList.add("open");
         if (content.style.maxHeight){
           content.style.maxHeight = null;
@@ -155,6 +163,7 @@
           content.appendChild(menuButtons);
           content.firstElementChild.setAttribute("contenteditable", true);
           clear.addEventListener("click", function() {
+            // TODO add ability to set title by double clicking on collapsible area?
             console.log("Click event listener went off!");
             content.firstElementChild.innerHTML = "";
             console.log(content.childNodes);
@@ -167,6 +176,13 @@
 
         
       });
+
+      function uploadNewPost(attachPoint, postBody) {
+        let newPost = document.createElement("p");
+        newPost.classList.add("post");
+        newPost.textContent = postBody;
+        attachPoint.prepend(newPost);
+      }
     }
   </script>
   <script src="https://www.google-analytics.com/analytics.js" async></script>
