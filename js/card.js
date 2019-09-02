@@ -154,22 +154,42 @@ class PictureCard {
 let reading = [
 		["Godel Escher Bach: An Eternal Golden Braid", "One of my favorites of 2019", '../res/books/geb/icon.jpg', "none", []],
 		["Empires of the Sea: The siege of Malta, The Battle of Lepanto, and the Contest for the Center of the World", "Given to me by a friend", '../res/books/empiresOfTheSea/icon.jpg', "none", []],
-		["33 Strategies of War", "", '../res/books/33Strategies/icon.jpg', "none", []],
-		["Benjamin Franklin: An American Life", "", '../res/books/franklinIsaacson/icon.jpg', "none", []],
+		
+		["Benjamin Franklin: An American Life", "First book loaned out to me from a library I privately joined.", '../res/books/franklinIsaacson/icon.jpg', "none", []],
 		["Do Androids Dream of Electric Sheep?", "First book of a book club I'm in", '../res/books/electricSheep/icon.png', "none", []],
 	]
 
+	let considering = [
+		["The Society of Mind", "", "../res/books/societyOfMind/icon.jpg", "none", []],
+		["Life After Google: The Fall of Big Data and the Rise of the Blockchain Economy", "", '../res/books/lifeAfterGoogle/icon.jpg', "none", []],
+		["AI Superpowers: China, Silicon Valley, and the New World Order", "", '../res/books/aiSuperpowers/icon.jpg', "none", []],
+		["Finite and Infinite Games", "", '../res/books/finiteAndInfiniteGames/icon.jpg', "none", []],
+		["Tao Te Ching", "", '../res/books/taoTeChing/icon.jpg', "none", []],
+		["Essentialism: The Disciplined Pursuit of Less", "", '../res/books/essentialism/icon.jpg', "none", []],
+		["Without Their Permission: The Story of Reddit and a Blueprint for How to Change the World", "", '../res/books/withoutTheirPermission/icon.jpg', "none", []],
+		["How to Change Your Mind: What the New Science of Psychedlics Teaches Abut Consciousness", "", '../res/books/howToChangeMind/icon.jpg', "none", []],
+		["Measure What Matters: How Google, Bono, and the Gates Foundation Rock the World with OKRs", "", '../res/books/measureWhatMatters/icon.jpg', "none", []],
+		["A Geometry of Music: Harmony and Counterpoint in the Extended Common Practice", "", '../res/books/GeometryOfMusic/icon.jpg', "none", []],
+		["The Role of the Individual in History", "", '../res/books/roleOfIndividual/icon.jpg', "none", []],
+		["The Alchemist", "", '../res/books/theAlchemist/icon.jpg', "none", []],
+		["The Shallows: What the Internet is Doing to Our Brains", "", '../res/books/theShallows/icon.jpg', "none", []],
+		["This is Your Brain on Music: The Science of a Human Obsession", "", '../res/books/brainOnMusic/icon.jpg', "none", []],
+	]
+
 	let toRead = [
-		["Shoe Dog: A Memoir by the Creator of Nike", "", '../res/books/shoeDog/icon.jpg', "none", []],
 		["Raise Your Game: High-Performance Secrets from the Best of the Best", "", '../res/books/raiseYourGame/icon.jpg', "none", []],
 		["The Future of Humanity: Terraforming Mars, Interstellar Travel, Immortality, and Our Destiny Beyond Earth", "", '../res/books/futureHumanity/icon.jpg', "none", []],
 		["Bad Blood: Secrets and Lies in a Silicon Valley Startup", "", '../res/books/badBlood/icon.jpg', "none", []],
 		["Life 3.0: Being Human in the Age of Artificial Intelligence", "", '../res/books/life3/icon.jpg', "none", []],
 		["Artificial Intelligence: A Modern Approach", "", '../res/books/modernApproach/icon.jpg', "none", []],
 		["The Dictator’s Handbook: Why Bad Behavior is Almost Always Good Politics", "", '../res/books/dictatorsHandbook/icon.jpg', "none", []],
+		["Steve Jobs", "", '../res/books/steveJobs/icon.jpg', "none", []],
+		["On Writing: A Memoir of the Craft", "", '../res/books/stephenKing/icon.jpg', "none", []],
 	]
 
 	let read = [
+		["Shoe Dog: A Memoir by the Creator of Nike", "", '../res/books/shoeDog/icon.jpg', "none", []],
+		["33 Strategies of War", "", '../res/books/33Strategies/icon.jpg', "none", []],
 	    ["The Black Swan: The Impact of the Highly Improbable", "", '../res/books/blackSwan/icon.jpg', "none", []],
 		["The Signal and the Noise: Why So Many Predictions Fail-but Some Don't", "", '../res/books/signalNoise/icon.jpg', "none", []],
 		["The Innovators: How a Group of Hackers, Geniuses, and Geeks Created the Digital Revolution", "", '../res/books/innovators/icon.jpg', "none", []],
@@ -291,6 +311,12 @@ window.onload = function() {
 	postArea.appendChild(readHeader);
 	renderBookList(postArea, read);
 
+	let toConsider = document.createElement("h1");
+	toConsider.innerHTML = "Books I'm considering (" + considering.length + ")";
+	postArea.appendChild(toConsider);
+
+	renderBookList(postArea, considering);
+
 	let didntFinish2019Header = document.createElement("h1");
 	didntFinish2019Header.innerHTML = "Books I started and didn't finish (2019)";
 	postArea.appendChild(didntFinish2019Header);
@@ -326,6 +352,13 @@ window.onresize = function resize() {
 	postArea.appendChild(toReadHeader);
 
 	renderBookList(postArea, toRead);
+
+	let toConsider = document.createElement("h1");
+	toConsider.innerHTML = "Books I'm considering on reading at some point...";
+	postArea.appendChild(toConsider);
+
+	renderBookList(postArea, considering);
+
 
 	let readHeader = document.createElement("h1");
 	readHeader.innerHTML = "Books I Finished!";
