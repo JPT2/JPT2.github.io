@@ -154,9 +154,8 @@ class PictureCard {
 let reading = [
 		["Godel Escher Bach: An Eternal Golden Braid", "One of my favorites of 2019", '../res/books/geb/icon.jpg', "none", []],
 		["Empires of the Sea: The siege of Malta, The Battle of Lepanto, and the Contest for the Center of the World", "Given to me by a friend", '../res/books/empiresOfTheSea/icon.jpg', "none", []],
-		
 		["Benjamin Franklin: An American Life", "First book loaned out to me from a library I privately joined.", '../res/books/franklinIsaacson/icon.jpg', "none", []],
-		["Do Androids Dream of Electric Sheep?", "First book of a book club I'm in", '../res/books/electricSheep/icon.png', "none", []],
+		
 	]
 
 	let considering = [
@@ -179,7 +178,6 @@ let reading = [
 	let toRead = [
 		["Raise Your Game: High-Performance Secrets from the Best of the Best", "", '../res/books/raiseYourGame/icon.jpg', "none", []],
 		["The Future of Humanity: Terraforming Mars, Interstellar Travel, Immortality, and Our Destiny Beyond Earth", "", '../res/books/futureHumanity/icon.jpg', "none", []],
-		["Bad Blood: Secrets and Lies in a Silicon Valley Startup", "", '../res/books/badBlood/icon.jpg', "none", []],
 		["Life 3.0: Being Human in the Age of Artificial Intelligence", "", '../res/books/life3/icon.jpg', "none", []],
 		["Artificial Intelligence: A Modern Approach", "", '../res/books/modernApproach/icon.jpg', "none", []],
 		["The Dictator’s Handbook: Why Bad Behavior is Almost Always Good Politics", "", '../res/books/dictatorsHandbook/icon.jpg', "none", []],
@@ -188,6 +186,9 @@ let reading = [
 	]
 
 	let read = [
+		["Do Androids Dream of Electric Sheep?", "First book of a book club I'm in", '../res/books/electricSheep/icon.png', "none", []],
+		["Einstein", "", "../res/books/einstein/icon.jpg", "none", []],
+		["Bad Blood: Secrets and Lies in a Silicon Valley Startup", "", '../res/books/badBlood/icon.jpg', "none", []],
 		["Shoe Dog: A Memoir by the Creator of Nike", "", '../res/books/shoeDog/icon.jpg', "none", []],
 		["33 Strategies of War", "", '../res/books/33Strategies/icon.jpg', "none", []],
 	    ["The Black Swan: The Impact of the Highly Improbable", "", '../res/books/blackSwan/icon.jpg', "none", []],
@@ -248,8 +249,12 @@ let reading = [
 	]
 var postArea = null;
 
+let screenWidth = -1;
 function renderBookList(attachPoint, bookList) {
 	console.log("Screen width: " + window.innerWidth);
+	// if (screenWidth === window.innerWidth) {
+	// 	return;
+	// }
 
 	let newList = document.createElement("table");
 	if (window.innerWidth < 500) {
@@ -266,28 +271,29 @@ function renderBookList(attachPoint, bookList) {
 		}
 	} else {
 		for (let i = 0; i < bookList.length/2; i++) {
-		let row = document.createElement("tr");
-		let entry = document.createElement("td");
-		let photoCard = new PictureCard(bookList[i * 2][0], bookList[i * 2][1], bookList[i * 2][2], bookList[i * 2][3], bookList[i * 2][4]);
-		let photoCardHTML = photoCard.createMiniCard();
-		entry.appendChild(photoCardHTML);
+			let row = document.createElement("tr");
+			let entry = document.createElement("td");
+			let photoCard = new PictureCard(bookList[i * 2][0], bookList[i * 2][1], bookList[i * 2][2], bookList[i * 2][3], bookList[i * 2][4]);
+			let photoCardHTML = photoCard.createMiniCard();
+			entry.appendChild(photoCardHTML);
 
-		let photoCardHTML2 = null;
-		let entry2 = document.createElement("td");
-		if ((i * 2 + 1) < bookList.length) {
-			let photoCard2 = new PictureCard(bookList[i * 2 + 1][0], bookList[i * 2 + 1][1], bookList[i * 2 + 1][2], bookList[i * 2 + 1][3], bookList[i * 2 + 1][4]);
-			photoCardHTML2 = photoCard2.createMiniCard();
-			entry2.appendChild(photoCardHTML2);
+			let photoCardHTML2 = null;
+			let entry2 = document.createElement("td");
+			if ((i * 2 + 1) < bookList.length) {
+				let photoCard2 = new PictureCard(bookList[i * 2 + 1][0], bookList[i * 2 + 1][1], bookList[i * 2 + 1][2], bookList[i * 2 + 1][3], bookList[i * 2 + 1][4]);
+				photoCardHTML2 = photoCard2.createMiniCard();
+				entry2.appendChild(photoCardHTML2);
+			}
+
+			row.appendChild(entry);
+			row.appendChild(entry2);
+			
+			newList.appendChild(row);
 		}
-
-		row.appendChild(entry);
-		row.appendChild(entry2);
-		
-		newList.appendChild(row);
-	}
 	}
 	
 	attachPoint.appendChild(newList);
+	screenWidth = window.innerWidth;
 }
 
 window.onload = function() {
