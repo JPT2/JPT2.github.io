@@ -1,10 +1,14 @@
 /*
 	This will serve as the core atom from which most site content will be built from (they might just have different render wrappers around this base)
+
+	TODO
+	---------------------
+	Think I should get rid of the title option and leave that to only the projects
 */
 class Note {
 	// This class is basically a data struct wrapper for notes on the site
 	constructor(title, content, date, tags, parent) {
-		this.title = title;
+		this.title = title; // TODO decide if this is still going to be used
 		this.content = content;
 		this.date = date; // TODO decide if want to add a "originally posted date" and a "last edited" date
 		this.tags = tags;
@@ -59,158 +63,6 @@ class Note {
 	}
 }
 
-// TODO should this extend note?
-class BlogPost {
-	/*
-		Title - Title of the blog post (if there is one)
-		Content - info to be displayed
-		date - when the post was made
-		parent - TODO (think it should eventually be the id of the node to attach to (or something like that))
-	*/
-	constructor(title, content, date, tags, parent) {
-		this.note = new Note(title, content, date, tags, parent);
-		this.domElement = this.create();
-		this.editing = false;
-		// this.render(parent); // Or maybe render logic should be handled by the caller? That might make more sense...
-	}
-
-	create() {
-		let postDiv = document.createElement("div");
-		postDiv.classList.add("blogPost");
-
-		// Add a div for displaying the title (or subtitle) if there is one
-		if (this.note.hasTitle()) {
-			let titleDiv = document.createElement("div");
-			if (this.note.hasParent()) {
-				// Add subtitle
-				titleDiv.classList.add("postSubtitle");
-			} else {
-				titleDiv.classList.add("postTitle");
-				postDiv.classList.add("initial");
-			}
-			titleDiv.textContent = this.note.getTitle();
-			postDiv.appendChild(titleDiv);
-			
-			// TODO - Add ability to edit the title
-				// TODO - Only edit title if there is permission (double the check on the backend.)
-		}
-
-		// Populate the content
-		let contentDiv = document.createElement("div");
-		contentDiv.classList.add("content");
-		let contentBody = document.createElement("p");
-		contentBody.textContent = this.note.getContent();
-		contentDiv.appendChild(contentBody);
-		postDiv.appendChild(contentDiv);
-			// TODO add ability to edit the content
-
-		// Create menu div for editing and stuff // TODO only show when permissions set
-		let menu = document.createElement("div");
-		menu.classList.add("menu");
-		contentDiv.classList.add("hover");
-
-		let saveButton = document.createElement("div");
-		saveButton.textContent = "Save Changes";
-		saveButton.classList.add("menuButton");
-		saveButton.classList.add("half");
-
-		let noteObj = this.note;
-		saveButton.addEventListener("click", function() {
-			// Update the note's content
-			console.log("Saving new content!");
-			let content = contentBody.textContent;
-			noteObj.setContent(content);
-			menu.parentNode.removeChild(menu);
-		});
-		
-		let revertButton = document.createElement("div");
-		revertButton.textContent = "Revert to pre-change";
-		revertButton.classList.add("menuButton");
-		revertButton.classList.add("half");
-		revertButton.addEventListener("click", function() {
-			console.log("Reverting");
-			console.log("Content: " + noteObj.getContent());
-			contentBody.textContent = noteObj.getContent();
-			menu.parentNode.removeChild(menu);
-		});
-
-		menu.appendChild(saveButton);
-		menu.appendChild(revertButton);
-
-		let note = this;
-		contentDiv.addEventListener("click", function() {
-			console.log("Trying to turn on editing!");
-			if (note.editing) {
-				contentBody.setAttribute("contenteditable", true);
-				contentBody.focus();
-				contentBody.addEventListener("input", function() {
-					console.log("Made change to the post!");
-					// Give option to save changes, or revert to previous
-					contentDiv.parentNode.insertBefore(menu, contentDiv.nextSibling);
-				});
-			}			
-		});
-
-		let closeButton = document.createElement("div");
-		closeButton.classList.add("closeButton");
-		closeButton.innerHTML = "&#10006";
-		closeButton.addEventListener("click", function() {
-			postDiv.parentNode.removeChild(postDiv);
-			// TODO - Code to delete note
-		});
-		contentDiv.addEventListener("mouseenter", function() {
-			console.log("Mouse enter appending close button!");
-			contentDiv.appendChild(closeButton);
-		});
-
-		contentDiv.addEventListener("mouseleave", function() {
-			contentDiv.removeChild(closeButton);
-		});
-		return postDiv;
-	}
-	
-	enableEditing() {
-		this.editing = true;
-	}
-
-	disableEditing() {
-		this.editing = false;
-	}
-
-	render(defaultAttachPoint) {
-		if (this.parent) {
-			console.log("Had parent");
-			console.log(this.parent);
-			let attachPoint = this.getAttachPoint();
-			attachPoint.appendChild(this.domElement);	// TODO - I'm not sure I like this current solution. Need some more intelligent logic regarding "depth" imo
-		} else {
-			console.log("Appending to default!");
-			defaultAttachPoint.appendChild(this.domElement);
-		}	
-	}
-
-	unrender() {
-		if (this.domElement.parentNode) {
-			this.domElement.parentNode.removeChild(this.domElement);
-		}
-	}
-
-	getAttachPoint() {
-		let parent = this.note.getParent();
-		if (parent && parent.domElement) {
-			console.log("Appending to parent");
-			return parent.domElement;
-		}
-		console.log("Appending to wall");
-		return document.getElementById("wall");
-	}
-
-	getNewsEvent() {
-		// Need to include the news event
-			// Have to return a news object (or should the news object have a way of pulling data from here?)
-	}
-}
-
 class createNote {
 	constructor() {
 		
@@ -232,6 +84,7 @@ class CollapsibleNoteCreator {
 	  }
 	}
 
+	// TODO Move the creation into a separate method and then have render just attach it
 	render() {
 	  // Create the holder for everything
 	  let shadowBox = document.createElement("div");
@@ -256,7 +109,7 @@ class CollapsibleNoteCreator {
 	  content.classList.add("content");
 
 	  // paste inside the div a place for the user to edit
-	  let editableContent = document.createElement("p");
+	  let editableContent = document.createElement("div");
 
 	  // Create the menu buttons for saving and deleting
 	  let menuButtons = document.createElement("div");
@@ -292,6 +145,8 @@ class CollapsibleNoteCreator {
 	  shadowBox.appendChild(collapsible);
 	  shadowBox.appendChild(content);
 
+	  let editor = new Editor();
+	//   editor.render(content);
 	  collapsible.addEventListener("click", function() {
 		// Activate the div
 		collapsible.classList.toggle("active");
@@ -299,8 +154,7 @@ class CollapsibleNoteCreator {
 		if (content.style.maxHeight) {
 		  // closing the post
 		  content.style.maxHeight = null;
-		  editableContent.setAttribute("contenteditable", false);
-		  // Why would we want to remove last child here?
+		//   editableContent.unrender();
 
 		  // Check if continuing or if new post
 		  if (editableContent.textContent === "") {
@@ -311,7 +165,7 @@ class CollapsibleNoteCreator {
 		} else {
 		  collapsible.textContent = "Hide Post (Will not publish!)";
 		  content.style.maxHeight = "inherit";
-		  editableContent.setAttribute("contenteditable", true);
+		  editor.render(editableContent);
 		}
 		collapsible.appendChild(newSpan);
 	  });
@@ -325,5 +179,50 @@ class CollapsibleNoteCreator {
 		newPost.textContent = postBody;
 		this.attachPoint.appendChild(newPost);
 	  }
+	}
+}
+
+class Editor {
+    constructor(width, height) {
+        this.width = width;
+		this.height = height;
+		this.setup = false;
+
+        // Create new quill editor
+        this.editor = document.createElement("div");
+        this.editor.id = "editor";
+        this.editor.width = width ? width + "px" : "100%";
+        this.editor.height = height ? height + "px" : "100%";
+    }
+
+    setupQuill() {
+		let quill = null;
+		if (!this.setup) {
+			console.log("have not setup before, setting up quill");
+			quill = new Quill("#editor", {
+				theme: "snow",
+			});
+			this.setup = true;
+		}
+        return quill;
+    }
+
+    render(attachPoint) {
+        if (attachPoint) {
+			console.log("Have attachpoint for editor");
+			attachPoint.appendChild(this.editor);
+			console.log("Setting up quill");
+            this.setupQuill();
+        } else {
+			console.log("Tried to render editor without an attach point!")
+		}
+	}
+	
+	unrender() {
+		if (this.editor.parentNode) {
+			this.editor.parentNode.removeChild(this.editor);
+		} else {
+			console.log("Tried to unrender editor when wasn't rendered!");
+		}
 	}
 }

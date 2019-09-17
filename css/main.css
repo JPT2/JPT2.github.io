@@ -271,9 +271,9 @@ html, body {
 }
 
 #newsfeed {
-  width: 100%;
+  /* width: 100%; */
   /*height: 800px;*/
-  padding-top: 25px;
+  /* padding-top: 25px; */
 }
 
 #spotlight {
@@ -418,6 +418,8 @@ td .mini-card {
   color: white;
   overflow: hidden;
   width: 100%;
+  height: 300px;
+  overflow: hidden;
 }
 
 .header {
@@ -620,41 +622,6 @@ li .post {
   background-color: blue;
 }*/
 
-@media only screen and (max-width: 600px) {
-  .post {
-    /*height: 100px;*/
-    position: relative;
-  }
-  .post img {
-    height: 100px;
-    width: 100px;
-    float: left;
-    border-radius: 5px 0 0 5px;
-  }
-  .preview {
-    padding: 0;
-    text-align: center;
-    height: 100px;
-    /* width: 150px; */
-    width: 150px;
-    overflow: hidden;
-  }
-  ul {
-    padding: 0;
-  }
-
-  .title {
-    white-space: normal;
-    overflow: scroll;
-    text-overflow: ellipsis;
-    /* word-wrap: normal; */
-    /* max-width: 800px; */
-    height: 100px;
-    overflow-wrap: break-word;
-    width: 100%;
-  }
-}
-
 .collapsible {
   background-color: #2b799db0;
   color: white;
@@ -772,7 +739,7 @@ table {
 .project {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
   transition: 0.3s;
-  margin: 10px auto;
+  margin: 35px auto;
   position: relative; /* Needed for the ribbon */
 }
 
@@ -789,7 +756,21 @@ table {
 }
 
 .notebook {
-  padding: 0 10px 10px 10px;
+  padding: 0 10px 10px 50px;
+}
+
+.notebook .project {
+  margin: 10px auto;
+}
+
+.notebook .project .project-header{
+  height: 150px;
+}
+
+.notebook .project .hero-text {
+  height: 150px;
+  text-align: left;
+  padding-left: 35px;
 }
 
 .projectButton {
@@ -820,7 +801,7 @@ table {
 Styles for the newsfeed
 */
 #newsfeed {
-  height: 650px;
+  /* height: 650px; */
 }
 
 .newsfeed {
@@ -846,6 +827,99 @@ Styles for the newsfeed
 .news .content a:hover {
   /* color: black; */
   text-decoration: underline;
+}
+
+ /* The Modal (background) */
+ .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.modal-content .container .header {
+  height: 30px;
+  padding: 5px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#editor {
+  background-color: #eaeef2ed;;
+}
+
+@media only screen and (max-width: 600px) {
+  .post {
+    /*height: 100px;*/
+    position: relative;
+  }
+  .post img {
+    height: 100px;
+    width: 100px;
+    float: left;
+    border-radius: 5px 0 0 5px;
+  }
+  .preview {
+    padding: 0;
+    text-align: center;
+    height: 100px;
+    /* width: 150px; */
+    width: 150px;
+    overflow: hidden;
+  }
+  ul {
+    padding: 0;
+  }
+
+  .title {
+    white-space: normal;
+    overflow: scroll;
+    text-overflow: ellipsis;
+    /* word-wrap: normal; */
+    /* max-width: 800px; */
+    height: 100px;
+    overflow-wrap: break-word;
+    width: 100%;
+  }
+
+  .notebook {
+    padding: 0 10px 10px 10px;
+  }
+  
+  .notebook .project .hero-text {
+    height: 150px;
+  }
 }
 
 /*
