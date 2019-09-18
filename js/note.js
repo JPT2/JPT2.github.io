@@ -139,11 +139,8 @@ class CreateNote {
 			// editor.addEventListener("keydown", handleKeyPress);
 			editor.addEventListener("input", function(e) {
 				// Bandaid solution to deal with android (should this be main solution?)
-				console.log("What do?");
-				console.log("editor.textContent: " + editor.textContent);
-				alert("editor.textContent: " + editor.textContent);
+
 				let editorString = editor.textContent;
-				// alert("Input event: " + editor.textContent[editor.textContent-1] + " string version? " + editorString[editorString.length - 1]);
 				if (editorString[editorString.length - 1] === "?") {
 					// TODO make call to some function
 					console.log("Handling question mark!");
@@ -160,10 +157,6 @@ class CreateNote {
 						noteBody += sentences[i] + ". ";
 					}
 					let question = sentences[sentences.length -1]; // Have to add the question mark since we handled event before character was added
-					console.log("Computed:");
-					console.log(sentences);
-					console.log("NoteBody: " + noteBody);
-					console.log("Question: " + question);
 
 					// Render the new elements (i think for now keep focus in the new note)
 					// Create new note with the noteBody
