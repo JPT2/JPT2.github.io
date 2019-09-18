@@ -174,6 +174,10 @@ class RenderProject {
 		for (let i = 0; i < this.project.numNotes(); i++) {
 			this.project.getNote(i).render(this.notebook);
 		}
+
+		// Experimental code
+		let newNote = new CreateNote();
+		newNote.render(this.notebook);
 	}
 
 	close() {

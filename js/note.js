@@ -63,13 +63,106 @@ class Note {
 	}
 }
 
-class createNote {
+class NewNote {
 	constructor() {
-		
+
+	}
+}
+
+class CreateNote {
+	constructor() {
+		this.domElement = this.create();
+		this.attachPoint = null;
 	}
 
 	create() {
-		
+		let containerDiv = document.createElement("div");
+		containerDiv.classList.add("content");
+
+		let editor = document.createElement("p");
+		editor.height = "50px";
+		editor.setAttribute("background-color","white");
+		let obj = this;
+		let handleKeyPress = function(e) {
+			console.log("Handling key press: " + e.keyCode);
+			if (e.keyCode === 63) { // Check for question mark
+				console.log("Handling question mark!");
+				// Remove the text area and add the new posts
+					// Remove the text area
+					obj.domElement.parentNode.removeChild(obj.domElement);
+
+				// Splice note (so everything before question becomes a note (that can still be edited) and the question becomes a "thought")
+				let text = editor.textContent;
+				let sentences = text.split(". ");
+				let noteBody = "";
+				for (let i = 0; i < sentences.length-1; i++) {
+					// Pretty sure there is better way to do this
+					noteBody += sentences[i] + ". ";
+				}
+				let question = sentences[sentences.length -1] + "?"; // Have to add the question mark since we handled event before character was added
+				console.log("Computed:");
+				console.log(sentences);
+				console.log("NoteBody: " + noteBody);
+				console.log("Question: " + question);
+
+				// Render the new elements (i think for now keep focus in the new note)
+				// Create new note with the noteBody
+				if (noteBody) {
+					let note = new Note(null, noteBody, new Date(), [], null);
+					let renderableNote = new BlogPost(note);
+					renderableNote.render(obj.attachPoint);
+				}
+
+				// Create the "thought" with the question
+				let project = new Project(question, "", null, null); // Need way of adding that next note with a focus
+				let renderableProject = new RenderProject(project);
+				renderableProject.domElement.classList.add("mini");
+				renderableProject.render(obj.attachPoint)
+
+				// Create way to respond
+					// TODO create new note inside the new project
+			}
+		}
+
+		let addNoteButton = document.createElement("button");
+		addNoteButton.textContent = "Add New Note";
+		addNoteButton.onclick = function() {
+			// Render the div for making a new note
+			containerDiv.removeChild(addNoteButton);
+			containerDiv.appendChild(editor);
+			editor.addEventListener("keypress", handleKeyPress);
+			editor.setAttribute("contentEditable", true);
+			addNoteButton.onclick = function() {
+				let note = new Note(null, editor.textContent);
+				let renderableNote = new BlogPost(note);
+				editor.textContent = "";
+				containerDiv.parentNode.insertBefore(renderableNote.domElement, containerDiv);
+				// renderableNote.render(obj.attachPoint);
+				
+			};
+			addNoteButton.textContent = "Publish";
+			containerDiv.appendChild(addNoteButton);
+		};
+
+		containerDiv.appendChild(addNoteButton);
+		return containerDiv;
+	}
+
+	render(attachPoint) {
+		console.log("Rendering to: " + attachPoint);
+		if (attachPoint) {
+			attachPoint.appendChild(this.domElement);
+			this.attachPoint = attachPoint;
+		} else {
+			console.log("No attach point provided to CreateNote");
+		}
+	}
+
+	unrender() {
+		if (this.domElement.parentNode) {
+			this.domElement.parentNode.removeChild(this.domElement);
+			this.attachPoint = null;
+		}
 	}
 }
 
