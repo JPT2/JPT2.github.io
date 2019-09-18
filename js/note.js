@@ -136,10 +136,14 @@ class CreateNote {
 			// Render the div for making a new note
 			containerDiv.removeChild(addNoteButton);
 			containerDiv.appendChild(editor);
-			editor.addEventListener("keydown", handleKeyPress);
+			// editor.addEventListener("keydown", handleKeyPress);
 			editor.addEventListener("input", function(e) {
 				// Bandaid solution to deal with android (should this be main solution?)
-				if (editor.textContent.splice(-1) === "?") {
+				console.log("What do?");
+				console.log("editor.textContent: " + editor.textContent);
+				let editorString = editor.textContent;
+				// alert("Input event: " + editor.textContent[editor.textContent-1] + " string version? " + editorString[editorString.length - 1]);
+				if (editorString[editorString.length - 1] === "?") {
 					// TODO make call to some function
 					console.log("Handling question mark!");
 					// Remove the text area and add the new posts
