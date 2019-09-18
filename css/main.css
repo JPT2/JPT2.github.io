@@ -879,8 +879,8 @@ Styles for the newsfeed
   background-color: #eaeef2ed;;
 }
 
-.blogPost p {
-  min-height: 50px;
+.content .editor {
+  background-color: #eff5fb
 }
 
 @media only screen and (max-width: 600px) {

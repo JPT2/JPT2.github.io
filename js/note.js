@@ -80,12 +80,13 @@ class CreateNote {
 		containerDiv.classList.add("content");
 
 		let editor = document.createElement("p");
+		editor.classList.add("editor");
 		editor.height = "50px";
 		editor.setAttribute("background-color","white");
 		let obj = this;
 		let handleKeyPress = function(e) {
 			console.log("Handling key press: " + e.keyCode);
-			if (e.keyCode === 63) { // Check for question mark
+			if (e.key == "?") { // Check for question mark
 				console.log("Handling question mark!");
 				// Remove the text area and add the new posts
 					// Remove the text area
@@ -132,6 +133,7 @@ class CreateNote {
 			containerDiv.appendChild(editor);
 			editor.addEventListener("keypress", handleKeyPress);
 			editor.setAttribute("contentEditable", true);
+			editor.focus();
 			addNoteButton.onclick = function() {
 				let note = new Note(null, editor.textContent);
 				let renderableNote = new BlogPost(note);
