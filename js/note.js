@@ -141,6 +141,7 @@ class CreateNote {
 				// Bandaid solution to deal with android (should this be main solution?)
 				console.log("What do?");
 				console.log("editor.textContent: " + editor.textContent);
+				alert("editor.textContent: " + editor.textContent);
 				let editorString = editor.textContent;
 				// alert("Input event: " + editor.textContent[editor.textContent-1] + " string version? " + editorString[editorString.length - 1]);
 				if (editorString[editorString.length - 1] === "?") {
