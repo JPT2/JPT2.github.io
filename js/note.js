@@ -85,6 +85,7 @@ class CreateNote {
 		editor.setAttribute("background-color","white");
 		let obj = this;
 		let handleKeyPress = function(e) {
+			alert("Key press: " + e.key + " with code: " + e.keyCode);
 			console.log("Handling key press: " + e.keyCode);
 			if (e.key == "?") { // Check for question mark
 				console.log("Handling question mark!");
@@ -132,6 +133,11 @@ class CreateNote {
 			containerDiv.removeChild(addNoteButton);
 			containerDiv.appendChild(editor);
 			editor.addEventListener("keydown", handleKeyPress);
+			editor.addEventListener("input", function(e) {
+				if (e.target.value.slice(-1) == '?') {
+					alert("Question mark!");
+				}
+			})
 			editor.setAttribute("contentEditable", true);
 			editor.focus();
 			addNoteButton.onclick = function() {
