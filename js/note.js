@@ -131,7 +131,7 @@ class CreateNote {
 			// Render the div for making a new note
 			containerDiv.removeChild(addNoteButton);
 			containerDiv.appendChild(editor);
-			editor.addEventListener("keypress", handleKeyPress);
+			editor.addEventListener("keydown", handleKeyPress);
 			editor.setAttribute("contentEditable", true);
 			editor.focus();
 			addNoteButton.onclick = function() {
