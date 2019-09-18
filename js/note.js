@@ -85,9 +85,10 @@ class CreateNote {
 		editor.setAttribute("background-color","white");
 		let obj = this;
 		let handleKeyPress = function(e) {
-			alert("Key press: " + e.key + " with code: " + e.keyCode);
+			// alert("Key press: " + e.key + " with code: " + e.keyCode);
 			console.log("Handling key press: " + e.keyCode);
 			if (e.key == "?") { // Check for question mark
+				// TODO make call to some function
 				console.log("Handling question mark!");
 				// Remove the text area and add the new posts
 					// Remove the text area
@@ -123,6 +124,9 @@ class CreateNote {
 
 				// Create way to respond
 					// TODO create new note inside the new project
+			} else if (e.keyCode === 229) {
+				// Won't work since question mark won't have rendered yet
+				
 			}
 		}
 
@@ -134,8 +138,44 @@ class CreateNote {
 			containerDiv.appendChild(editor);
 			editor.addEventListener("keydown", handleKeyPress);
 			editor.addEventListener("input", function(e) {
-				if (e.target.value.slice(-1) == '?') {
-					alert("Question mark!");
+				// Bandaid solution to deal with android (should this be main solution?)
+				if (editor.textContent.splice(-1) === "?") {
+					// TODO make call to some function
+					console.log("Handling question mark!");
+					// Remove the text area and add the new posts
+						// Remove the text area
+						obj.domElement.parentNode.removeChild(obj.domElement);
+
+					// Splice note (so everything before question becomes a note (that can still be edited) and the question becomes a "thought")
+					let text = editor.textContent;
+					let sentences = text.split(". ");
+					let noteBody = "";
+					for (let i = 0; i < sentences.length-1; i++) {
+						// Pretty sure there is better way to do this
+						noteBody += sentences[i] + ". ";
+					}
+					let question = sentences[sentences.length -1]; // Have to add the question mark since we handled event before character was added
+					console.log("Computed:");
+					console.log(sentences);
+					console.log("NoteBody: " + noteBody);
+					console.log("Question: " + question);
+
+					// Render the new elements (i think for now keep focus in the new note)
+					// Create new note with the noteBody
+					if (noteBody) {
+						let note = new Note(null, noteBody, new Date(), [], null);
+						let renderableNote = new BlogPost(note);
+						renderableNote.render(obj.attachPoint);
+					}
+
+					// Create the "thought" with the question
+					let project = new Project(question, "", null, null); // Need way of adding that next note with a focus
+					let renderableProject = new RenderProject(project);
+					renderableProject.domElement.classList.add("mini");
+					renderableProject.render(obj.attachPoint)
+
+					// Create way to respond
+						// TODO create new note inside the new project
 				}
 			})
 			editor.setAttribute("contentEditable", true);
