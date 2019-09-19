@@ -73,6 +73,20 @@ class CreateNote {
 	constructor() {
 		this.domElement = this.create();
 		this.attachPoint = null;
+		this.parentProjects = [];
+	}
+
+	listenToNewNotes(projectRef) {
+		console.log("PrjectRef: " + projectRef);
+		this.parentProjects.push(projectRef);
+	}
+
+	pushNewNote(note) {
+		console.log("Pushing new note: " + note);
+		for (let i = 0; i < this.parentProjects.length; i++) {
+			console.log("Pushing to project: " + this.parentProjects[i]);
+			this.parentProjects[i].addNote(note);
+		}
 	}
 
 	create() {
@@ -146,7 +160,7 @@ class CreateNote {
 					console.log("Handling question mark!");
 					// Remove the text area and add the new posts
 						// Remove the text area
-						obj.domElement.parentNode.removeChild(obj.domElement);
+					// obj.domElement.parentNode.removeChild(obj.domElement);
 
 					// Splice note (so everything before question becomes a note (that can still be edited) and the question becomes a "thought")
 					let text = editor.textContent;
@@ -160,17 +174,41 @@ class CreateNote {
 
 					// Render the new elements (i think for now keep focus in the new note)
 					// Create new note with the noteBody
-					if (noteBody) {
-						let note = new Note(null, noteBody, new Date(), [], null);
-						let renderableNote = new BlogPost(note);
-						renderableNote.render(obj.attachPoint);
-					}
+					// if (noteBody) {
+					// 	let note = new Note(null, noteBody, new Date(), [], null);
+					// 	let renderableNote = new BlogPost(note);
+					// 	obj.pushNewNote(renderableNote);
+					// 	renderableNote.render(obj.attachPoint);
+					// }
 
 					// Create the "thought" with the question
 					let project = new Project(question, "", null, null); // Need way of adding that next note with a focus
 					let renderableProject = new RenderProject(project);
 					renderableProject.domElement.classList.add("mini");
-					renderableProject.render(obj.attachPoint)
+					renderableProject.render(obj.attachPoint);
+					obj.pushNewNote(renderableProject);
+
+					// Clear out the div contents
+					editor.textContent = noteBody;
+
+					function placeCaretAtEnd(el) {
+						el.focus();
+						if (typeof window.getSelection != "undefined"
+								&& typeof document.createRange != "undefined") {
+							var range = document.createRange();
+							range.selectNodeContents(el);
+							range.collapse(false);
+							var sel = window.getSelection();
+							sel.removeAllRanges();
+							sel.addRange(range);
+						} else if (typeof document.body.createTextRange != "undefined") {
+							var textRange = document.body.createTextRange();
+							textRange.moveToElementText(el);
+							textRange.collapse(false);
+							textRange.select();
+						}
+					}
+					placeCaretAtEnd(editor);
 
 					// Create way to respond
 						// TODO create new note inside the new project
@@ -206,6 +244,8 @@ class CreateNote {
 
 	unrender() {
 		if (this.domElement.parentNode) {
+			console.log("This.domElement: " + this.domElement);
+			console.log(this.domElement);
 			this.domElement.parentNode.removeChild(this.domElement);
 			this.attachPoint = null;
 		}

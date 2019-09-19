@@ -66,6 +66,9 @@ class RenderProject {
 		this.notebook.classList.add("notebook");
 		this.domElement.appendChild(this.notebook);
 
+		this.newNote = new CreateNote();
+		this.newNote.listenToNewNotes(this.project);
+
 		this.isOpen = false;
 		this.canEdit = false;
 		this.rendered = false;
@@ -175,15 +178,15 @@ class RenderProject {
 			this.project.getNote(i).render(this.notebook);
 		}
 
-		// Experimental code
-		let newNote = new CreateNote();
-		newNote.render(this.notebook);
+		this.newNote.render(this.notebook);
 	}
 
 	close() {
 		for (let i = 0; i < this.project.numNotes(); i++) {
 			this.project.getNote(i).unrender();
 		}
+
+		this.newNote.unrender(this.notebook);
 	}
 
 	render(attachPoint) {
@@ -300,7 +303,6 @@ class LinkedRenderProject {
 class NewProject {
 	constructor() {
 		// Feel like using modals to just quickly get all the data might work
-
 		this.modal = this.createProjectModal();
 		this.modalContent = this.modal.firstChild.firstChild;
 		this.domElement = this.createButton();
