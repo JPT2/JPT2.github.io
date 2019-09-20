@@ -63,9 +63,22 @@ class Note {
 	}
 }
 
-class NewNote {
-	constructor() {
-
+// Could maybe move this into a utility class
+function placeCaretAtEnd(el) {
+	el.focus();
+	if (typeof window.getSelection != "undefined"
+			&& typeof document.createRange != "undefined") {
+		var range = document.createRange();
+		range.selectNodeContents(el);
+		range.collapse(false);
+		var sel = window.getSelection();
+		sel.removeAllRanges();
+		sel.addRange(range);
+	} else if (typeof document.body.createTextRange != "undefined") {
+		var textRange = document.body.createTextRange();
+		textRange.moveToElementText(el);
+		textRange.collapse(false);
+		textRange.select();
 	}
 }
 
@@ -77,112 +90,50 @@ class CreateNote {
 	}
 
 	listenToNewNotes(projectRef) {
-		console.log("PrjectRef: " + projectRef);
 		this.parentProjects.push(projectRef);
 	}
 
 	pushNewNote(note) {
-		console.log("Pushing new note: " + note);
 		for (let i = 0; i < this.parentProjects.length; i++) {
-			console.log("Pushing to project: " + this.parentProjects[i]);
 			this.parentProjects[i].addNote(note);
 		}
 	}
 
 	create() {
+		// Div to hold everything we do (tethers button and textarea together)
 		let containerDiv = document.createElement("div");
 		containerDiv.classList.add("content");
 
+		// Object for handling all text input // TODO will want to update to some editor that has ability to format
 		let editor = document.createElement("p");
 		editor.classList.add("editor");
-		editor.height = "50px";
-		editor.setAttribute("background-color","white");
 		let obj = this;
-		let handleKeyPress = function(e) {
-			// alert("Key press: " + e.key + " with code: " + e.keyCode);
-			console.log("Handling key press: " + e.keyCode);
-			if (e.key == "?") { // Check for question mark
-				// TODO make call to some function
-				console.log("Handling question mark!");
-				// Remove the text area and add the new posts
-					// Remove the text area
-					obj.domElement.parentNode.removeChild(obj.domElement);
 
-				// Splice note (so everything before question becomes a note (that can still be edited) and the question becomes a "thought")
-				let text = editor.textContent;
-				let sentences = text.split(". ");
-				let noteBody = "";
-				for (let i = 0; i < sentences.length-1; i++) {
-					// Pretty sure there is better way to do this
-					noteBody += sentences[i] + ". ";
-				}
-				let question = sentences[sentences.length -1] + "?"; // Have to add the question mark since we handled event before character was added
-				console.log("Computed:");
-				console.log(sentences);
-				console.log("NoteBody: " + noteBody);
-				console.log("Question: " + question);
-
-				// Render the new elements (i think for now keep focus in the new note)
-				// Create new note with the noteBody
-				if (noteBody) {
-					let note = new Note(null, noteBody, new Date(), [], null);
-					let renderableNote = new BlogPost(note);
-					renderableNote.render(obj.attachPoint);
-				}
-
-				// Create the "thought" with the question
-				let project = new Project(question, "", null, null); // Need way of adding that next note with a focus
-				let renderableProject = new RenderProject(project);
-				renderableProject.domElement.classList.add("mini");
-				renderableProject.render(obj.attachPoint)
-
-				// Create way to respond
-					// TODO create new note inside the new project
-			} else if (e.keyCode === 229) {
-				// Won't work since question mark won't have rendered yet
-				
-			}
-		}
-
+		// Don't want to show the text area by default so have a way of opening up place to edit
 		let addNoteButton = document.createElement("button");
 		addNoteButton.textContent = "Add New Note";
 		addNoteButton.onclick = function() {
 			// Render the div for making a new note
 			containerDiv.removeChild(addNoteButton);
 			containerDiv.appendChild(editor);
-			// editor.addEventListener("keydown", handleKeyPress);
 			editor.addEventListener("input", function(e) {
-				// Bandaid solution to deal with android (should this be main solution?)
-
+				// Idea here is if user is typing a question, pull it out of the note and allow them to revisit and answer it later
 				let editorString = editor.textContent;
 				if (editorString[editorString.length - 1] === "?") {
-					// TODO make call to some function
-					console.log("Handling question mark!");
-					// Remove the text area and add the new posts
-						// Remove the text area
-					// obj.domElement.parentNode.removeChild(obj.domElement);
-
 					// Splice note (so everything before question becomes a note (that can still be edited) and the question becomes a "thought")
 					let text = editor.textContent;
 					let sentences = text.split(". ");
 					let noteBody = "";
+
+					// Create the note from the array
 					for (let i = 0; i < sentences.length-1; i++) {
 						// Pretty sure there is better way to do this
 						noteBody += sentences[i] + ". ";
 					}
-					let question = sentences[sentences.length -1]; // Have to add the question mark since we handled event before character was added
-
-					// Render the new elements (i think for now keep focus in the new note)
-					// Create new note with the noteBody
-					// if (noteBody) {
-					// 	let note = new Note(null, noteBody, new Date(), [], null);
-					// 	let renderableNote = new BlogPost(note);
-					// 	obj.pushNewNote(renderableNote);
-					// 	renderableNote.render(obj.attachPoint);
-					// }
+					let question = sentences[sentences.length -1];
 
 					// Create the "thought" with the question
-					let project = new Project(question, "", null, null); // Need way of adding that next note with a focus
+					let project = new Project(question, "", null, null);
 					let renderableProject = new RenderProject(project);
 					renderableProject.domElement.classList.add("mini");
 					renderableProject.render(obj.attachPoint);
@@ -190,24 +141,6 @@ class CreateNote {
 
 					// Clear out the div contents
 					editor.textContent = noteBody;
-
-					function placeCaretAtEnd(el) {
-						el.focus();
-						if (typeof window.getSelection != "undefined"
-								&& typeof document.createRange != "undefined") {
-							var range = document.createRange();
-							range.selectNodeContents(el);
-							range.collapse(false);
-							var sel = window.getSelection();
-							sel.removeAllRanges();
-							sel.addRange(range);
-						} else if (typeof document.body.createTextRange != "undefined") {
-							var textRange = document.body.createTextRange();
-							textRange.moveToElementText(el);
-							textRange.collapse(false);
-							textRange.select();
-						}
-					}
 					placeCaretAtEnd(editor);
 
 					// Create way to respond
@@ -216,13 +149,22 @@ class CreateNote {
 			})
 			editor.setAttribute("contentEditable", true);
 			editor.focus();
+
+			// Change button to now publish posts when clicked since they are currently in "editing/adding" mode
 			addNoteButton.onclick = function() {
 				let note = new Note(null, editor.textContent);
 				let renderableNote = new BlogPost(note);
-				editor.textContent = "";
+
+				// Publish note before since its where questions would be stemming from anyways
 				containerDiv.parentNode.insertBefore(renderableNote.domElement, containerDiv);
-				// renderableNote.render(obj.attachPoint);
-				
+				pushNewNote(renderableNote);
+
+				// Want to push newNote after any questions that would have been added (in future this step might be unnecessary if questions end up being children or something)
+				let parent = containerDiv.parentNode;
+				parent.removeChild(containerDiv);
+				parent.appendChild(containerDiv); // Should move after all questions
+				editor.textContent = "";
+						
 			};
 			addNoteButton.textContent = "Publish";
 			containerDiv.appendChild(addNoteButton);
@@ -233,7 +175,6 @@ class CreateNote {
 	}
 
 	render(attachPoint) {
-		console.log("Rendering to: " + attachPoint);
 		if (attachPoint) {
 			attachPoint.appendChild(this.domElement);
 			this.attachPoint = attachPoint;
@@ -244,10 +185,10 @@ class CreateNote {
 
 	unrender() {
 		if (this.domElement.parentNode) {
-			console.log("This.domElement: " + this.domElement);
-			console.log(this.domElement);
 			this.domElement.parentNode.removeChild(this.domElement);
 			this.attachPoint = null;
+		} else {
+			console.log("Tried to unrender newNote when wasn't rendered");
 		}
 	}
 }
@@ -255,7 +196,6 @@ class CreateNote {
 class CollapsibleNoteCreator {
 	constructor(attachPoint) {
 	  // Bind context for certain methods that need a constant this
-	  // this.publish = this.publish.bind(this);
 	  this.newPost = this.render();
 	  this.attachPoint = attachPoint;
 	  if (this.newPost != null && attachPoint != null) {
@@ -377,7 +317,6 @@ class Editor {
     setupQuill() {
 		let quill = null;
 		if (!this.setup) {
-			console.log("have not setup before, setting up quill");
 			quill = new Quill("#editor", {
 				theme: "snow",
 			});
@@ -388,9 +327,7 @@ class Editor {
 
     render(attachPoint) {
         if (attachPoint) {
-			console.log("Have attachpoint for editor");
 			attachPoint.appendChild(this.editor);
-			console.log("Setting up quill");
             this.setupQuill();
         } else {
 			console.log("Tried to render editor without an attach point!")
