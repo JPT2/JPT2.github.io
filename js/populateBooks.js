@@ -1,11 +1,20 @@
 // Should spent the most time re-evaluating the corner stones of a work and little time building from there. Invest time proportional to the time it might save
 // Should only invent new functions as need fundamentally new behaviors
+function newNote(content, date, tags) {
+    return new BlogPost(new Note(null, content, date, tags, null));
+}
 
 let reading = [
-    ["Godel Escher Bach: An Eternal Golden Braid", "One of my favorites of 2019", '../res/books/geb/icon.jpg', "none", []],
+    ["Godel Escher Bach: An Eternal Golden Braid", "One of my favorites of 2019", '../res/books/geb/icon.jpg', "none", [
+        newNote("While long, this book has been one of the more rewarding reads of the year and has me thinking about the nature of things and what types of recursive behaviors appear in life and how they might be used.")
+    ]],
     ["Empires of the Sea: The siege of Malta, The Battle of Lepanto, and the Contest for the Center of the World", "Given to me by a friend", '../res/books/empiresOfTheSea/icon.jpg', "none", []],
-    ["Benjamin Franklin: An American Life", "First book loaned out to me from a library I privately joined.", '../res/books/franklinIsaacson/icon.jpg', "none", []],
-    ["Meditations", "Book #2 of Book Club", '../res/books/meditations/icon.jpg', "none", []],
+    ["Benjamin Franklin: An American Life", "First book loaned out to me from a library I privately joined.", '../res/books/franklinIsaacson/icon.jpg', "none", [
+        newNote("While I'm not the biggest fan of Walter Isaacson books, I can't help reading about their subjects. Benjamin Franklin was a man who dipped his toes in many things to great acclaim, I'd like to understand the how and why to that. I'm just not sure if this is the book to do it.")
+    ]],
+    ["On Writing: A Memoir of the Craft", "", '../res/books/stephenKing/icon.jpg', "none", [
+        newNote("I've been having a number of issues dealing with trying to create projects and how to navigate the inherent ambiguity in doing things for yourself. I'm not sure if this is the right book, but I'm hoping that there might be some insight on how to start to approach or think about those issues in this book.")
+    ]],
 ]
 
 let considering = [
@@ -32,10 +41,10 @@ let toRead = [
     ["Artificial Intelligence: A Modern Approach", "", '../res/books/modernApproach/icon.jpg', "none", []],
     ["The Dictator’s Handbook: Why Bad Behavior is Almost Always Good Politics", "", '../res/books/dictatorsHandbook/icon.jpg', "none", []],
     ["Steve Jobs", "", '../res/books/steveJobs/icon.jpg', "none", []],
-    ["On Writing: A Memoir of the Craft", "", '../res/books/stephenKing/icon.jpg', "none", []],
 ]
 
 let read = [
+    ["Meditations", "Book #2 of Book Club", '../res/books/meditations/icon.jpg', "none", []],
     ["The Everything Store: Jeff Bezos and the Age of Amazon", "", '../res/books/everythingStore/icon.jpg', "none", []],
     ["Do Androids Dream of Electric Sheep?", "First book of a book club I'm in", '../res/books/electricSheep/icon.png', "none", []],
     ["Einstein", "", "../res/books/einstein/icon.jpg", "none", []],
@@ -112,7 +121,7 @@ function renderBookList(attachPoint, title, subtitle, bookList) {
         for (let i = 0; i < bookList.length; i++) {
             let row = document.createElement("tr");
             let entry = document.createElement("td");
-            let photoCard = new RenderProject(new Project(bookList[i][0], bookList[i][1], bookList[i][2], []));
+            let photoCard = new RenderProject(new Project(bookList[i][0], bookList[i][1], bookList[i][2], bookList[i][3]));
             row.appendChild(entry);
             newList.appendChild(row);
             books.push(photoCard);
@@ -121,12 +130,12 @@ function renderBookList(attachPoint, title, subtitle, bookList) {
         for (let i = 0; i < bookList.length/2; i++) {
             let row = document.createElement("tr");
             let entry = document.createElement("td");
-            let photoCard = new RenderProject(new Project(bookList[i * 2][0], bookList[i * 2][1], bookList[i * 2][2], []));
+            let photoCard = new RenderProject(new Project(bookList[i * 2][0], bookList[i * 2][1], bookList[i * 2][2], bookList[i][3]));
             books.push(photoCard);
 
             let entry2 = document.createElement("td");
             if ((i * 2 + 1) < bookList.length) {
-                let photoCard2 = new RenderProject(new Project(bookList[i * 2 + 1][0], bookList[i * 2 + 1][1], bookList[i * 2 + 1][2], []));
+                let photoCard2 = new RenderProject(new Project(bookList[i * 2 + 1][0], bookList[i * 2 + 1][1], bookList[i * 2 + 1][2], bookList[i][3]));
                 books.push(photoCard2);
             }
 

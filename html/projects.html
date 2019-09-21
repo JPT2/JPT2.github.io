@@ -73,7 +73,7 @@
 
     let attachPoint = document.getElementById("newsfeed");
     for (let i = 0; i < projects.length; i++) {
-      let renderable = new LinkedRenderProject(projects[i].project, projects[i].link);
+      let renderable = new RenderProject(projects[i].project); // new LinkedRenderProject(projects[i].project, projects[i].link);
       renderable.render(attachPoint);
     }
   </script>
