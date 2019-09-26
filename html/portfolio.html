@@ -68,23 +68,23 @@
     // New post database
     let projects = [
         {title: "Test Title", description: descriptionText, imgPath: "https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png", newsfeed: dummyNewsfeed},
-        {title: "Platoon Dynamics", description: "A Decision Platform for HDVs", imgPath: "../res/platoonDynamics/imgs/icon.png", newsfeed: dummyNewsfeed},
-        {title: "No Script For You!", description: "A RNN for generating Seinfeld Scripts", imgPath: "../res/noScriptForYou/imgs/noScriptForYou.png", newsfeed: dummyNewsfeed},
-        {title: "Threads", description: "A Web Based Notebooking Tool", imgPath: "../res/threads/imgs/threads.png", newsfeedDiv: dummyNewsfeed},
-        {title: "OkEmoji", description: "Maps People's Emoji Responses in Your Vicinity. Won Best First Hack at HackNY some years back", imgPath: "../res/okEmoji/imgs/okEmoji.png", newsfeed: dummyNewsfeed},
-        {title: "Noted", description: "A tool for sharing ideas with friends and mapping concepts (Predecessor to threads)", imgPath: "../res/noted/imgs/noted.png", newsfeed: dummyNewsfeed},
-        {title: "This Website!", description: "Attempt at making an online progress journal for myself.", imgPath: "../res/personalSite/imgs/personalSite.png", newsfeed: dummyNewsfeed},
+        // {title: "Platoon Dynamics", description: "A Decision Platform for HDVs", imgPath: "../res/platoonDynamics/imgs/icon.png", newsfeed: dummyNewsfeed},
+        // {title: "No Script For You!", description: "A RNN for generating Seinfeld Scripts", imgPath: "../res/noScriptForYou/imgs/noScriptForYou.png", newsfeed: dummyNewsfeed},
+        // {title: "Threads", description: "A Web Based Notebooking Tool", imgPath: "../res/threads/imgs/threads.png", newsfeedDiv: dummyNewsfeed},
+        // {title: "OkEmoji", description: "Maps People's Emoji Responses in Your Vicinity. Won Best First Hack at HackNY some years back", imgPath: "../res/okEmoji/imgs/okEmoji.png", newsfeed: dummyNewsfeed},
+        // {title: "Noted", description: "A tool for sharing ideas with friends and mapping concepts (Predecessor to threads)", imgPath: "../res/noted/imgs/noted.png", newsfeed: dummyNewsfeed},
+        // {title: "This Website!", description: "Attempt at making an online progress journal for myself.", imgPath: "../res/personalSite/imgs/personalSite.png", newsfeed: dummyNewsfeed},
     ];
 
     let attachPoint = document.getElementById("scroll");
     let projectObjs = [];
     let numProjects = projects.length;
-    // for (let i = 1; i < numProjects; i++) {
-    //     let project = {title: "Test Title " + i, description: descriptionText, imgPath: "https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png", newsfeed: dummyNewsfeed};
-    //     projects.push(project);
-    // }
+    for (let i = 1; i < 5; i++) {
+        let project = {title: "Test Title " + i, description: descriptionText, imgPath: "https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png", newsfeed: dummyNewsfeed};
+        projects.push(project);
+    }
 
-    for (let i = 0; i < numProjects; i++) {
+    for (let i = 0; i < projects.length; i++) {
         let newProject = new RenderProject(new Project(projects[i].title, null, projects[i].imgPath, projects[i].description, []));
         projectObjs.push(newProject);
 
