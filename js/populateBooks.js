@@ -153,7 +153,11 @@ function renderBookList(attachPoint, title, subtitle, bookList) {
 }
 
 window.onload = function() {
-    this.populateBooks();
+    if (document.getElementById("title")) {
+        this.populateBooks2();
+    } else {
+        this.populateBooks();
+    }
 }
 
 function populateBooks() {
@@ -166,11 +170,70 @@ function populateBooks() {
     renderBookList(postArea, "Books I Finished (2018)", "I managed to get through " + read2018.length + "!", read2018);	
 }
 
+function populateBooks2() {
+    postArea = document.getElementById("scroll");
+    // Render clickable book thingy
+
+
+    let p1 = renderBookProject(postArea, "Books I'm Working On", "Currently trying to read through " + reading.length + " books", reading[0][2], reading);
+    renderBookProject(postArea, "Books on my To-Do list", "Might pick up one of these " + toRead.length, toRead[0][2], toRead);
+    renderBookProject(postArea, "Books I Finished in 2019", "Trying to read a book a week! Currently at " + read.length + "/52", read[0][2], read);
+    renderBookProject(postArea, "Books I'm Considering", "Currently thinking over " + considering.length + ". Let me know if you think any really deserve a read!", considering[0][2], considering);
+    renderBookProject(postArea, "Books I Started and Didn't Finish (2019)", "I tried reading one of these " + didntFinish2019.length + ". But I just couldn't bring myself to finish.", didntFinish2019[0][2], didntFinish2019);
+    renderBookProject(postArea, "Books I Finished (2018)", "I managed to get through " + read2018.length + "!", read2018[0][2], read2018);
+
+    loadProject(p1.project, reading);
+}
+
+function renderBookProject(attachPoint, title, description, imgLink, newsfeed) {
+    let clickable = document.createElement("div");
+    clickable.classList.add("entry");
+
+    let project = new Project(title, description, imgLink, description, null);
+    let renderProject = new RenderProject(project);
+
+    clickable.addEventListener("click", function() {
+        loadProject(project, newsfeed);
+    });
+
+    // Attach event listner to load new book into field
+    renderProject.render(clickable);
+    attachPoint.appendChild(clickable);
+
+    return renderProject;
+}
+
+function loadProject(project, newsfeed) { // TODO move newsfeed into project
+    let titleDiv = document.getElementById("title");
+    let descriptionDiv = document.getElementById("description");
+    let newsfeedDiv = document.getElementById("newsfeed");
+    title.textContent = project.title;
+    descriptionDiv.textContent = project.description;
+
+    // Unload previous news
+    while (newsfeedDiv.firstChild) {
+        newsfeedDiv.removeChild(newsfeedDiv.firstChild);
+    }
+    for (let i = 0; i < newsfeed.length; i++) {
+        let p = document.createElement("div");
+        p.classList.add("news");
+
+        let n = new RenderProject(new Project(newsfeed[i][0], null, newsfeed[i][2], null, null));
+        // p.textContent = newsfeed[i][0];
+        n.render(p);
+        newsfeedDiv.appendChild(p);
+    }
+}
+
 let screenSize = 0;
 window.onresize = function resize() {
     // Try not to repopulate for minor changes
     if (screenSize == window.innerWidth) {
         return;
     }
-    this.populateBooks();
+    if (document.getElementById("title")) {
+        this.populateBooks2();
+    } else {
+        this.populateBooks();
+    }
 }
