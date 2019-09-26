@@ -1,0 +1,134 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="../css/normalize.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/portfolio.css">
+  <link href="https://fonts.googleapis.com/css?family=Audiowide|Bitter|Dosis|Indie+Flower|Josefin+Sans|Merriweather+Sans|Permanent+Marker|Shadows+Into+Light&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  <!-- Add your site or application content here -->
+  <div id="menu-bar" class="marker">
+    <div class="masthead">
+      <div class="siteName">JecT</div>
+      <div class="subtitle">An interactive project journal</div>
+    </div>
+    <ul>
+      <li><a class="hover" href="./contacts.html">Contact</a></li>
+      <li><a class="hover" href="./books.html">Books</a></li>
+      <li><a class="hover">Notes</a></li>
+      <li><a class="hover" href="./projects.html">Projects</a></li>
+      <li><a class="hover" href="../index.html">Home</a></li>
+    </ul>
+  </div>
+
+  <div id="display">
+      <div id="title"></div>
+      <div id="description"></div>
+      <div id="newsfeed"></div>
+  </div>
+  <div id="scroll">
+
+  </div>
+
+  <script src="../js/vendor/modernizr-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="../js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+  <script src="../js/plugins.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/note.js"></script>
+  <script src="../js/blogPost.js"></script>
+  <script src="../js/project.js"></script>
+
+  <script type="text/javascript">
+    let descriptionText = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ornare in libero hendrerit dictum. Proin luctus justo id convallis iaculis. Etiam a diam vitae est viverra maximus. Aliquam metus ipsum, euismod non faucibus at, suscipit a dolor. Duis in elit et quam semper commodo quis eu elit. Sed sit amet volutpat erat, eget interdum nisi. Morbi dictum tellus efficitur justo interdum, vitae ultrices nulla lobortis. Donec blandit diam nec auctor eleifend. Pellentesque auctor, nisl et tempor sodales, sem velit finibus dui, molestie convallis purus elit nec justo. Maecenas porttitor interdum congue. Proin ultricies sapien quis ex pretium, nec placerat nunc placerat. Etiam eleifend mauris eget tortor lacinia, eu facilisis risus gravida. Nullam iaculis risus diam, vel pellentesque velit pellentesque vel. Etiam auctor, libero et malesuada vehicula, justo elit pulvinar orci, a sagittis purus augue non ipsum. Integer sed aliquam arcu. Nunc auctor eros ligula, ut elementum leo pharetra eget. Nam justo ipsum, consequat ut bibendum non, fringilla a mauris. Donec facilisis leo vitae urna commodo, ut varius dui hendrerit. Praesent feugiat ligula at rhoncus convallis. Quisque porttitor in dolor in ullamcorper. Sed sed diam nec sapien viverra placerat. Etiam elementum venenatis est, ac volutpat lectus consequat a. Ut placerat consequat faucibus. Praesent dictum ultricies sapien, id ullamcorper dolor rhoncus id. Etiam ipsum lorem, interdum a porttitor vitae, finibus vitae odio. Mauris tincidunt tempus mi, molestie finibus velit ornare eget. Morbi condimentum vitae nunc ac sollicitudin. Sed pulvinar, lorem sed consequat eleifend, mi metus tempor nisi, commodo tempor enim lorem non ex. Etiam interdum nunc nec mattis tincidunt. Sed consectetur pellentesque mattis. "
+    let dummyNewsfeed = [];
+    let numMilestones = 7;
+    for (let i = 0; i < numMilestones; i++) {
+        dummyNewsfeed.push("Milestone " + i);
+    }
+
+    // New post database
+    let projects = [
+        {title: "Test Title", description: descriptionText, imgPath: "https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png", newsfeed: dummyNewsfeed},
+    ];
+
+    
+
+    let attachPoint = document.getElementById("scroll");
+    let projectObjs = [];
+    let numProjects = 5;
+    for (let i = 1; i < numProjects; i++) {
+        let project = {title: "Test Title " + i, description: descriptionText, imgPath: "https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png", newsfeed: dummyNewsfeed};
+        projects.push(project);
+    }
+
+    for (let i = 0; i < numProjects; i++) {
+        let newProject = new RenderProject(new Project(projects[i].title, null, projects[i].imgPath, projects[i].description, []));
+        projectObjs.push(newProject);
+
+        let clickable = document.createElement("div");
+        clickable.addEventListener("click", function() {
+            loadProject(projects[i]);
+        });
+        
+        // Publishh
+        newProject.render(clickable);
+        attachPoint.appendChild(clickable);
+    }
+
+    // Populate the display with the first project
+    function loadProject(project) {
+        let titleDiv = document.getElementById("title");
+        let descriptionDiv = document.getElementById("description");
+        let newsfeedDiv = document.getElementById("newsfeed");
+        title.textContent = project.title;
+        descriptionDiv.textContent = project.description;
+
+        // Unload previous news
+        while (newsfeedDiv.firstChild) {
+            newsfeedDiv.removeChild(newsfeedDiv.firstChild);
+        }
+        for (let i = 0; i < project.newsfeed.length; i++) {
+            let p = document.createElement("p");
+            p.classList.add("news");
+            p.textContent = project.newsfeed[i];
+            newsfeedDiv.appendChild(p);
+        }
+    }
+    loadProject(projects[0]);
+    
+  </script>
+
+  <!-- Include stylesheet -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <!-- Include the Quill library -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+  </script>
+  
+  <script src="https://www.google-analytics.com/analytics.js" async></script>
+</body>
+
+</html>

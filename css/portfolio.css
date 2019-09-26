@@ -1,0 +1,36 @@
+#display {
+    float: left;
+    width: 74%;
+    height: 90%;
+}
+
+#scroll {
+    float: left;
+    width: 25%;
+    height: 90%;
+    overflow: scroll;
+}
+
+.scroll {
+
+}
+
+#title {
+    height: 100px;
+    width: 100%;
+    text-align: center;
+    font-size: 50px;
+}
+
+#description {
+    padding: 0 20px;
+    width: 70%;
+    float: left;
+}
+
+#newsfeed {
+    width: 25%;
+    height: 90%;
+    overflow: scroll;
+    float: left;
+}
