@@ -121,7 +121,7 @@ function renderBookList(attachPoint, title, subtitle, bookList) {
         for (let i = 0; i < bookList.length; i++) {
             let row = document.createElement("tr");
             let entry = document.createElement("td");
-            let photoCard = new RenderProject(new Project(bookList[i][0], bookList[i][1], bookList[i][2], bookList[i][3]));
+            let photoCard = new RenderProject(new Project(bookList[i][0], bookList[i][1], bookList[i][2], null, bookList[i][3]));
             row.appendChild(entry);
             newList.appendChild(row);
             books.push(photoCard);
@@ -130,12 +130,12 @@ function renderBookList(attachPoint, title, subtitle, bookList) {
         for (let i = 0; i < bookList.length/2; i++) {
             let row = document.createElement("tr");
             let entry = document.createElement("td");
-            let photoCard = new RenderProject(new Project(bookList[i * 2][0], bookList[i * 2][1], bookList[i * 2][2], bookList[i][3]));
+            let photoCard = new RenderProject(new Project(bookList[i * 2][0], bookList[i * 2][1], bookList[i * 2][2], null, bookList[i * 2 + 1][3]));
             books.push(photoCard);
 
             let entry2 = document.createElement("td");
             if ((i * 2 + 1) < bookList.length) {
-                let photoCard2 = new RenderProject(new Project(bookList[i * 2 + 1][0], bookList[i * 2 + 1][1], bookList[i * 2 + 1][2], bookList[i][3]));
+                let photoCard2 = new RenderProject(new Project(bookList[i * 2 + 1][0], bookList[i * 2 + 1][1], bookList[i * 2 + 1][2], null, bookList[i * 2 + 1][3]));
                 books.push(photoCard2);
             }
 
@@ -147,7 +147,7 @@ function renderBookList(attachPoint, title, subtitle, bookList) {
     }
 
     let img = books.length > 0 ? books[Math.floor(Math.random() * books.length)].getImg() : "../img/library.jpg";
-    let booksWrapper = new RenderProject(new Project(title, subtitle, img, books));
+    let booksWrapper = new RenderProject(new Project(title, subtitle, img, null, books));
     booksWrapper.render(attachPoint);
     screenWidth = window.innerWidth;
 }
