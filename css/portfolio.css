@@ -5,14 +5,24 @@
 }
 
 #scroll {
-    float: left;
+    /* float: left;
     width: 25%;
-    height: 90%;
-    overflow: scroll;
-}
+    height: calc(100% - 56px);
+    border-left: 2px solid #00000014;
 
-.scroll {
+    overflow-y: scroll;
+    overflow-x: hidden; */
 
+    float: left;
+    width: 24.8%;
+    height: calc(100% - 56px);
+    border-left: 2px solid #000;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 17px;
+    box-sizing: content-box;
+    padding-left: 10px;
+    background: #000;
 }
 
 #title {
@@ -20,17 +30,68 @@
     width: 100%;
     text-align: center;
     font-size: 50px;
+    border-bottom: 1px solid black;
+    padding-top: 10px;
 }
 
 #description {
-    padding: 0 20px;
-    width: 70%;
+    /* padding: 10px 20px 0 20px;
+    width: 72%;
+    float: left; */
+    width: 77%;
     float: left;
+    height: calc(100% - 344px);
+    overflow-y: auto;
+    padding-left: 50px;
 }
 
 #newsfeed {
-    width: 25%;
-    height: 90%;
-    overflow: scroll;
+    /* width: 25%;
+    height: calc(100% - 44px);
     float: left;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-top: 10px;
+    border-left: 1px solid #00000014; */
+
+    width: 20%;
+    height: calc(100% - 344px);
+    float: left;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 10px;
+    border-left: 1px solid #00000014;
+}
+
+#hero-image {
+    height: 300px;
+}
+
+.news {
+    /* margin: 5px;
+    background: #000000e0;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    min-height: 30px; */
+
+    margin: 5px;
+    background: #000000e6;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    min-height: 30px;
+}
+
+.entry {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.content {
+    margin: 10px 20px 0 20px;
+    height: 100%;
+    border-radius: 0px 0px 00px 40px;
+    padding: 5px 20px;
+    border-bottom: 1px solid #00000054;
 }

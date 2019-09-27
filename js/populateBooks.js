@@ -207,7 +207,7 @@ function loadProject(project, newsfeed) { // TODO move newsfeed into project
     let titleDiv = document.getElementById("title");
     let descriptionDiv = document.getElementById("description");
     let newsfeedDiv = document.getElementById("newsfeed");
-    title.textContent = project.title;
+    titleDiv.textContent = project.title;
     descriptionDiv.textContent = project.description;
 
     // Unload previous news
@@ -217,10 +217,17 @@ function loadProject(project, newsfeed) { // TODO move newsfeed into project
     for (let i = 0; i < newsfeed.length; i++) {
         let p = document.createElement("div");
         p.classList.add("news");
+        p.addEventListener("click", function(e) {
+            e.stopPropagation()
 
-        let n = new RenderProject(new Project(newsfeed[i][0], null, newsfeed[i][2], null, null));
-        // p.textContent = newsfeed[i][0];
-        n.render(p);
+            // Load in the new data based on the event
+            titleDiv.textContent = newsfeed[i][0];
+            descriptionDiv.textContent = newsfeed[i][1] ? newsfeed[i][1] : "No Current Thoughts";
+        });
+
+        // let n = new RenderProject(new Project(newsfeed[i][0], null, newsfeed[i][2], null, null));
+        p.textContent = newsfeed[i][0];
+        // n.render(p);
         newsfeedDiv.appendChild(p);
     }
 }

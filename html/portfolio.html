@@ -40,6 +40,7 @@
   </div>
 
   <div id="display">
+      <div id="hero-image"></div>
       <div id="title"></div>
       <div id="description"></div>
       <div id="newsfeed"></div>
@@ -68,12 +69,12 @@
     // New post database
     let projects = [
         {title: "Test Title", description: descriptionText, imgPath: "https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png", newsfeed: dummyNewsfeed},
-        // {title: "Platoon Dynamics", description: "A Decision Platform for HDVs", imgPath: "../res/platoonDynamics/imgs/icon.png", newsfeed: dummyNewsfeed},
-        // {title: "No Script For You!", description: "A RNN for generating Seinfeld Scripts", imgPath: "../res/noScriptForYou/imgs/noScriptForYou.png", newsfeed: dummyNewsfeed},
-        // {title: "Threads", description: "A Web Based Notebooking Tool", imgPath: "../res/threads/imgs/threads.png", newsfeedDiv: dummyNewsfeed},
-        // {title: "OkEmoji", description: "Maps People's Emoji Responses in Your Vicinity. Won Best First Hack at HackNY some years back", imgPath: "../res/okEmoji/imgs/okEmoji.png", newsfeed: dummyNewsfeed},
-        // {title: "Noted", description: "A tool for sharing ideas with friends and mapping concepts (Predecessor to threads)", imgPath: "../res/noted/imgs/noted.png", newsfeed: dummyNewsfeed},
-        // {title: "This Website!", description: "Attempt at making an online progress journal for myself.", imgPath: "../res/personalSite/imgs/personalSite.png", newsfeed: dummyNewsfeed},
+        {title: "Platoon Dynamics", description: "A Decision Platform for HDVs", imgPath: "../res/platoonDynamics/imgs/icon.png", newsfeed: dummyNewsfeed},
+        {title: "No Script For You!", description: "A RNN for generating Seinfeld Scripts", imgPath: "../res/noScriptForYou/imgs/noScriptForYou.png", newsfeed: dummyNewsfeed},
+        {title: "Threads", description: "A Web Based Notebooking Tool", imgPath: "../res/threads/imgs/threads.png", newsfeedDiv: dummyNewsfeed},
+        {title: "OkEmoji", description: "Maps People's Emoji Responses in Your Vicinity. Won Best First Hack at HackNY some years back", imgPath: "../res/okEmoji/imgs/okEmoji.png", newsfeed: dummyNewsfeed},
+        {title: "Noted", description: "A tool for sharing ideas with friends and mapping concepts (Predecessor to threads)", imgPath: "../res/noted/imgs/noted.png", newsfeed: dummyNewsfeed},
+        {title: "This Website!", description: "Attempt at making an online progress journal for myself.", imgPath: "../res/personalSite/imgs/personalSite.png", newsfeed: dummyNewsfeed},
     ];
 
     let attachPoint = document.getElementById("scroll");
@@ -103,8 +104,25 @@
         let titleDiv = document.getElementById("title");
         let descriptionDiv = document.getElementById("description");
         let newsfeedDiv = document.getElementById("newsfeed");
+        let heroImageDiv = document.getElementById("hero-image");
+        // Unload previous img
+        while (heroImageDiv.firstChild) {
+            heroImageDiv.removeChild(heroImageDiv.firstChild);
+        }
+
+
+        let heroImage = document.createElement("div");
+		heroImage.classList.add("hero-image");
+        heroImage.style.backgroundImage  = "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)), url(" + project.imgPath + ")";
+        heroImageDiv.appendChild(heroImage);
+
+        let notebook = document.createElement("div");
+        let contentP = document.createElement("p");
+        contentP.classList.add("content");
         title.textContent = project.title;
-        descriptionDiv.textContent = project.description;
+        contentP.textContent = project.description;
+        notebook.appendChild(contentP);
+        descriptionDiv.appendChild(notebook);
 
         // Unload previous news
         while (newsfeedDiv.firstChild) {
