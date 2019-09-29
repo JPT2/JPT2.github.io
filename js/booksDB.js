@@ -1,5 +1,3 @@
-// Should spent the most time re-evaluating the corner stones of a work and little time building from there. Invest time proportional to the time it might save
-// Should only invent new functions as need fundamentally new behaviors
 function newNote(content, date, tags) {
     return new BlogPost(new Note(null, content, date, tags, null));
 }
@@ -9,7 +7,7 @@ let reading = [
     ["On Writing: A Memoir of the Craft", "", '../res/books/stephenKing/icon.jpg', "none", [
         newNote("I've been having a number of issues dealing with trying to create projects and how to navigate the inherent ambiguity in doing things for yourself. I'm not sure if this is the right book, but I'm hoping that there might be some insight on how to start to approach or think about those issues in this book.")
     ]],
-]
+];
 
 let considering = [
     ["The Society of Mind", "", "../res/books/societyOfMind/icon.jpg", "none", []],
@@ -26,7 +24,7 @@ let considering = [
     ["The Alchemist", "", '../res/books/theAlchemist/icon.jpg', "none", []],
     ["The Shallows: What the Internet is Doing to Our Brains", "", '../res/books/theShallows/icon.jpg', "none", []],
     ["This is Your Brain on Music: The Science of a Human Obsession", "", '../res/books/brainOnMusic/icon.jpg', "none", []],
-]
+];
 
 let toRead = [
     ["Raise Your Game: High-Performance Secrets from the Best of the Best", "", '../res/books/raiseYourGame/icon.jpg', "none", []],
@@ -35,7 +33,7 @@ let toRead = [
     ["Artificial Intelligence: A Modern Approach", "", '../res/books/modernApproach/icon.jpg', "none", []],
     ["The Dictator’s Handbook: Why Bad Behavior is Almost Always Good Politics", "", '../res/books/dictatorsHandbook/icon.jpg', "none", []],
     ["Steve Jobs", "", '../res/books/steveJobs/icon.jpg', "none", []],
-]
+];
 
 let read = [
     ["Godel Escher Bach: An Eternal Golden Braid", "One of my favorites of 2019", '../res/books/geb/icon.jpg', "none", [
@@ -91,7 +89,7 @@ let read = [
 
 let didntFinish2019 = [
     ["The Idea Factory: Bell Labs and the Great Age of American Innovation", "", "../res/books/ideaFactory/icon.jpg", "none", []],
-]
+];
 
 let read2018 = [
     ["Factfulness: Ten Reasons We're Wrong About the World--and Why Things Are Better Than You Think", "", "../res/books/factfulness/icon.jpg", "none", []],
@@ -107,142 +105,28 @@ let read2018 = [
     ["The 4-Hour Workweek: Escape 9–5, Live Anywhere, and Join the New Rich", "", "../res/books/4Hour/icon.jpg", "none", []],
     ["Sapiens: A Brief History of Humankind", "", "../res/books/sapiens/icon.jpg", "none", []],
     ["Why We Sleep: The New Science of Sleep and Dreams", "", "../res/books/whySleep/icon.jpg", "none", []],
+];
+
+function wrapBookToProject(bookData) {
+    return new Project(bookData[0], bookData[1], bookData[2], bookData[1], bookData[3]);
+}
+
+function wrapBooksToProjects(books) {
+    let projects = [];
+    for (let i = 0; i < books.length; i++) {
+        projects.push(wrapBookToProject(books[i]));
+    }
+    return projects;
+}
+
+let booksScroll = [
+    new Project("Reading in 2019", "Currently have read: " + read.length + "/52!", read[0][2], "All the books I've currently read this year. I set a goal of reading 52 books this year and so far I've done a pretty good job of keeping up with that goal. The idea behind this exercise was to get myself back into reading and to develop that habit. It was also just a fun challenge. I used to read a lot growing up so its nice to get back to that. Going into 2020 I'm going to be looking on trying to mix in more fiction books (with the idea of reading books that explore ideas and perspectives that are \"off limits\" for one reason or another) and nonfiction books that help me solve or think about issues I'm currently tryign to wrestle with. I'm also going to be making an effort to go back and update these books with my thoughts and takeaways. But we'll see if I get around to that. No promises :)", wrapBooksToProjects(read)),
+    new Project("Books I've acquired", "Currently have " + toRead.length + " waiting in the wings", toRead[0][2], "These are books I've been looking to read and finally picked up. I'll probably get around to reading these books soon, but if you want to see why I picked them up feel free to take a look through the list.", wrapBooksToProjects(toRead)),
+    new Project("Books I'm looking to acquire", "Currently considering " + considering.length + " books.", considering[0][2], "These are books I've either good things about or thing might be interesting. If you've heard anything about any of these books feel free to let me know if you'd recommend or advise against anything you see on this list here. If you want to see why I'm considering these books feel free to click through", wrapBooksToProjects(considering)),
+    new Project("The Graveyard (2019)", "Books I tried reading but couldn't bring myself to finish.", didntFinish2019[0][2], "These are books I thought would be interesting but somewhere along the way found that it wasn't for me. If you want to poke through and see what I originally was looking to read the book for and why it didn't work for me feel free to take a peak around.", wrapBooksToProjects(didntFinish2019)),
+    new Project("Books from 2018", "I read " + read2018.length + " books in 2018!", read2018[0][2], "If you want to see what I ended up getting through in 2018 here's the place to look. Unfortunately, because I didn't get around to making this site until late 2019 its unlikely that I'll ever get back to update these books with the type of information you see for the newer stuff... Sorry about that, but hey, there is always a chance I'll get to these one day or another.", wrapBooksToProjects(read2018)),
 ]
-var postArea = null;
 
-let screenWidth = -1;
-function renderBookList(attachPoint, title, subtitle, bookList) {
-    // if (screenWidth === window.innerWidth) {
-    // 	return;
-    // }
-
-    let newList = document.createElement("table");
-    let books = [];
-    console.log(title + " with length: " + bookList.length);
-    if (window.innerWidth < 500) {
-        for (let i = 0; i < bookList.length; i++) {
-            let row = document.createElement("tr");
-            let entry = document.createElement("td");
-            let photoCard = new RenderProject(new Project(bookList[i][0], bookList[i][1], bookList[i][2], null, bookList[i][3]));
-            row.appendChild(entry);
-            newList.appendChild(row);
-            books.push(photoCard);
-        }
-    } else {
-        for (let i = 0; i < bookList.length/2; i++) {
-            let row = document.createElement("tr");
-            let entry = document.createElement("td");
-            let photoCard = new RenderProject(new Project(bookList[i * 2][0], bookList[i * 2][1], bookList[i * 2][2], null, bookList[i * 2][3]));
-            books.push(photoCard);
-
-            let entry2 = document.createElement("td");
-            if ((i * 2 + 1) < bookList.length) {
-                let photoCard2 = new RenderProject(new Project(bookList[i * 2 + 1][0], bookList[i * 2 + 1][1], bookList[i * 2 + 1][2], null, bookList[i * 2 + 1][3]));
-                books.push(photoCard2);
-            }
-
-            row.appendChild(entry);
-            row.appendChild(entry2);
-            
-            newList.appendChild(row);
-        }
-    }
-
-    let img = books.length > 0 ? books[Math.floor(Math.random() * books.length)].getImg() : "../img/library.jpg";
-    let booksWrapper = new RenderProject(new Project(title, subtitle, img, null, books));
-    booksWrapper.render(attachPoint);
-    screenWidth = window.innerWidth;
-}
-
-window.onload = function() {
-    if (document.getElementById("title")) {
-        this.populateBooks2();
-    } else {
-        this.populateBooks();
-    }
-}
-
-function populateBooks() {
-    postArea = document.getElementById("postArea");
-    renderBookList(postArea, "Books I'm Working On", "Currently trying to read through " + reading.length + " books", reading);
-    renderBookList(postArea, "Books on my To-Do list", "Might pick up one of these " + toRead.length, toRead);
-    renderBookList(postArea, "Books I Finished in 2019", "Trying to read a book a week! Currently at " + read.length + "/52", read);
-    renderBookList(postArea, "Books I'm Considering", "Currently thinking over " + considering.length + ". Let me know if you think any really deserve a read!", considering);
-    renderBookList(postArea, "Books I Started and Didn't Finish (2019)", "I tried reading one of these " + didntFinish2019.length + ". But I just couldn't bring myself to finish.", didntFinish2019);
-    renderBookList(postArea, "Books I Finished (2018)", "I managed to get through " + read2018.length + "!", read2018);	
-}
-
-function populateBooks2() {
-    postArea = document.getElementById("scroll");
-    // Render clickable book thingy
-
-
-    let p1 = renderBookProject(postArea, "Books I'm Working On", "Currently trying to read through " + reading.length + " books", reading[0][2], reading);
-    renderBookProject(postArea, "Books on my To-Do list", "Might pick up one of these " + toRead.length, toRead[0][2], toRead);
-    renderBookProject(postArea, "Books I Finished in 2019", "Trying to read a book a week! Currently at " + read.length + "/52", read[0][2], read);
-    renderBookProject(postArea, "Books I'm Considering", "Currently thinking over " + considering.length + ". Let me know if you think any really deserve a read!", considering[0][2], considering);
-    renderBookProject(postArea, "Books I Started and Didn't Finish (2019)", "I tried reading one of these " + didntFinish2019.length + ". But I just couldn't bring myself to finish.", didntFinish2019[0][2], didntFinish2019);
-    renderBookProject(postArea, "Books I Finished (2018)", "I managed to get through " + read2018.length + "!", read2018[0][2], read2018);
-
-    loadProject(p1.project, reading);
-}
-
-function renderBookProject(attachPoint, title, description, imgLink, newsfeed) {
-    let clickable = document.createElement("div");
-    clickable.classList.add("entry");
-
-    let project = new Project(title, description, imgLink, description, null);
-    let renderProject = new RenderProject(project);
-
-    clickable.addEventListener("click", function() {
-        loadProject(project, newsfeed);
-    });
-
-    // Attach event listner to load new book into field
-    renderProject.render(clickable);
-    attachPoint.appendChild(clickable);
-
-    return renderProject;
-}
-
-function loadProject(project, newsfeed) { // TODO move newsfeed into project
-    let titleDiv = document.getElementById("title");
-    let descriptionDiv = document.getElementById("description");
-    let newsfeedDiv = document.getElementById("newsfeed");
-    titleDiv.textContent = project.title;
-    descriptionDiv.textContent = project.description;
-
-    // Unload previous news
-    while (newsfeedDiv.firstChild) {
-        newsfeedDiv.removeChild(newsfeedDiv.firstChild);
-    }
-    for (let i = 0; i < newsfeed.length; i++) {
-        let p = document.createElement("div");
-        p.classList.add("news");
-        p.addEventListener("click", function(e) {
-            e.stopPropagation()
-
-            // Load in the new data based on the event
-            titleDiv.textContent = newsfeed[i][0];
-            descriptionDiv.textContent = newsfeed[i][1] ? newsfeed[i][1] : "No Current Thoughts";
-        });
-
-        // let n = new RenderProject(new Project(newsfeed[i][0], null, newsfeed[i][2], null, null));
-        p.textContent = newsfeed[i][0];
-        // n.render(p);
-        newsfeedDiv.appendChild(p);
-    }
-}
-
-let screenSize = 0;
-window.onresize = function resize() {
-    // Try not to repopulate for minor changes
-    if (screenSize == window.innerWidth) {
-        return;
-    }
-    if (document.getElementById("title")) {
-        this.populateBooks2();
-    } else {
-        this.populateBooks();
-    }
+function getBooksScrollBar() {
+    return booksScroll;
 }

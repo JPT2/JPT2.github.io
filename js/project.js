@@ -1,4 +1,4 @@
-// TODO - I think it would be cool to have a featured project top and to the left, and then a scrollable carousel to the right where hovering over something in it causes it to be featured
+// TODO - Need to add news/notices, and "notes"
 class Project {
 	constructor(title, subtitle, imgPath, description, noteList) {
 		this.title = title;
@@ -36,6 +36,9 @@ class Project {
 		this.description = description;
 	}
 
+	getNotes() {
+		return this.notes;
+	}
 	getNote(index) {
 		return this.notes[index];
 	}
@@ -55,6 +58,11 @@ class Project {
 	}
 	clearNotes() {
 		this.notes.clear();
+	}
+
+	getNewsfeed() {
+		console.log("Get newsfeed. Returning: " + this.notes);
+		return this.notes;
 	}
 }
 
